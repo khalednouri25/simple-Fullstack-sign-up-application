@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Inscription</title>
+                <meta charset="utf-8"/>
+
+        <meta name="viewport" content="user-scalable=no, width=device-width"/>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/style.css">
+
+
+    </head>
+<body id="bodydiv">
+<div class="form-group row">
+<form class="form-horizontal" role="form">
+                <h2>Please complete the following fields:</h2>
+    <div class="form-group w-25">
+        Family name: <input type ="text" class="form-control" id="family_name" placeholder="Family name">
+   </div>
+   <div class="form-group w-25">
+         Frist name: <input type="text" class="form-control" id="first_name" placeholder="First name">
+   </div>
+   <div class="form-group w-25">
+         Email:    <input type="text" class="form-control"  id="email" placeholder="Email">
+   </div>
+   <div class="form-group w-25">
+         password: <input class="form-control" type="password" id="ps" placeholder="Password">
+   </div>
+ 
+</div>
+
+    <div id="divError"> </div>
+    <p><button type="button" class="btn btn-primary" onclick="SingUp()">Sign Up</button>   &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;   <button class="btn btn-default" onclick="toEmpty()">Clear fields</button></p>
+</form>
+
+<script>
+    function toEmpty(){
+    /*empty all fields*/
+    document.getElementById("family_name").value=""
+    document.getElementById("first_name").value=""
+    document.getElementById("email").value=""
+    document.getElementById("ps").value=""
+    document.getElementById("divError").innerHTML=""
+   
+    }
+</script>
+    <script src="jquery.min.js"></script>
+<script>
+    
+    function SingUp (){
+    document.getElementById("ps").style.backgroundColor = "white";
+    document.getElementById("family_name").style.backgroundColor = "white";
+    document.getElementById("first_name").style.backgroundColor = "white";
+    document.getElementById("email").style.backgroundColor = "white";
+    document.getElementById("divError").innerHTML=""
+
+    var family_name =document.getElementById("family_name").value
+    var first_name=document.getElementById("first_name").value
+    var email =document.getElementById("email").value
+    var password=document.getElementById("ps").value
+    /* check whether one or more fields are empty*/
+    if( email==="" && password ==="" && first_name===""&& family_name==="")
+    {
+        document.getElementById("divError").innerHTML = "All fields are empty, please enter your informations !"
+        document.getElementById("email").style.backgroundColor = "red";
+        document.getElementById("ps").style.backgroundColor = "red";
+        document.getElementById("family_name").style.backgroundColor = "red";
+        document.getElementById("first_name").style.backgroundColor = "red";
+    }
+    else
+    {
+    if(email==="" && password !=="" && first_name !== "" && family_name!=="")
+    {
+        document.getElementById("divError").innerHTML = "You must enter you email!"
+        document.getElementById("email").style.backgroundColor = "red";
+    } 
+    else
+    {
+    if( email!=="" && password ==="" && first_name !== "" && family_name!=="")
+    {
+        document.getElementById("divError").innerHTML = "You must enter you password!"
+        document.getElementById("ps").style.backgroundColor = "red";
+    }
+    else
+    {
+    if( email!=="" && password !=="" && first_name === "" && family_name!=="")
+    {
+        document.getElementById("divError").innerHTML = "You must enter you first name!"
+        document.getElementById("first_name").style.backgroundColor = "red";
+    }
+    else
+    {
+    if( email!=="" && password !=="" && first_name !== "" && family_name==="")
+    {
+        document.getElementById("divError").innerHTML = "You must enter you family name!"
+        document.getElementById("family_name").style.backgroundColor = "red";
+    }
+
+    
+    else
+    {
+    /*check if there is a @ is in email*/
+    var index_search_char1 = email.indexOf('@')
+    var index_search_char2 = email.indexOf('@', (index_search_char1+1))
+    if(index_search_char2 > 0)
+    {
+    /*there is more than one @ in the email, so error*/
+        document.getElementById("email").style.backgroundColor = "red";
+        document.getElementById("divError").innerHTML="Your email must have only one '@', please enter a good email!"
+  
+    }
+    else 
+    {
+    if(index_search_char1 < 0)
+    {
+    /*there is no @ in the email, so error*/
+
+        document.getElementById("divError").innerHTML="Your email must have a '@'',  please enter a good email!"
+        document.getElementById("email").style.backgroundColor = "red"; 
+    }
+    else
+    {
+    var index_of_point= email.indexOf('.')
+    if(index_of_point < 0)
+    {
+        /*there is no . in the email, so error*/
+        document.getElementById("divError").innerHTML="You must enter a good email (you have forgetten a '.' )!"
+        document.getElementById("email").style.backgroundColor = "red";    
+
+    }
+    /*check if password has at least one capital letter*/
+    else
+    {
+    is_lower_letter= password.toLowerCase()
+    if(is_lower_letter === password){
+        document.getElementById("divError").innerHTML="Your password must have at least one capital letter!"
+        document.getElementById("ps").style.backgroundColor = "red";    
+
+    }
+    else
+    {
+    is_upper_letters=password.toUpperCase()
+    /*check if password has at least one lewer letter*/
+
+    if(is_upper_letters===password)
+    {
+        document.getElementById("divError").innerHTML="Your password must have at least one lower letter!"
+        document.getElementById("ps").style.backgroundColor = "red";   
+    }
+    /*check if password contain at least one number*/
+    else
+    {
+    var hasNumber= /\d/
+    if(hasNumber.test(password)=== false)
+    {
+        document.getElementById("divError").innerHTML="Your password must have at least one number!"
+        document.getElementById("ps").style.backgroundColor = "red";   
+    }
+    
+    else
+    {
+    length_password=password.length
+    /*check if password have at least 8 character*/
+    if(length_password<8)
+    {
+        document.getElementById("divError").innerHTML="Your password must have at least 8 caracters including one capital letter, one lowercase letter and one number!"
+        document.getElementById("ps").style.backgroundColor = "red";  
+    }
+        
+   /*if there is no problems in the fields so, create connection with the server*/
+   //creating a XHR Object
+   let xhr= new XMLHttpRequest();
+   let url="get_info_users.php";
+    //open a connection
+    xhr.open("POST",url, true)
+    //send the request header i.e. which type of conent you are sending
+    xhr.setRequestHeader("Content-Type", "application/json");
+    //Create a state change callback
+    xhr.onreadystatechange=function() {
+    
+    if(xhr.readyState==4 && xhr.status ===200)
+    {
+        var textResp=xhr.responseText
+        var myObject=JSON.parse(textResp)
+        myText=myObject.id
+        console.log(myText)
+    if(myText=== -1){
+        /*the email exists in tha database, so error*/
+         alert("Your email already exists in the database, try with another mail or sign in!")
+    }
+    else
+    {
+    if(myText==1)
+    {
+        alert("Your sign up is done successfully , Welcome "+first_name+' '+family_name)
+    }
+    else{
+        /* sign up does not works, problem in the server*/
+    if(myText==-2){
+         alert("There is a problem in the server, pleaste try again")
+    }
+    }
+    }
+    }
+    };
+    //Converting JSON data to string
+    var data=JSON.stringify({"family_name":family_name, "first_name":first_name, "email": email, "password":password});
+    //Sending data with the resquest
+    xhr.send(data);
+    //Converting JSON data to string
+    //var data=JSON.stringify({"mail": email, "password":password});
+
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+    }
+</script>
+
+
+</body>
+</html>
+
+

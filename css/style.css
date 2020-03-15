@@ -1,0 +1,24 @@
+
+#bodydiv{
+    position: relative;
+    background-color: rgb(48, 241, 241);
+    left: 600px;
+    top: 250px;
+    border:1px solid rgb(4, 24, 58);
+    width: 550px;
+    height: 500px;
+    margin:60px;
+    }
+    .btn{
+        position: relative;
+        left: 120px;
+    }
+    .form-group{
+        position: relative;
+        left: 20px;
+    }
+    #divError{
+        color: red;
+        position: relative;
+        left: 20px;
+    }
